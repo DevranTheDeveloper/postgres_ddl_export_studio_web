@@ -32,23 +32,24 @@ document.addEventListener('DOMContentLoaded', () => {
             tabContents.forEach(c => c.classList.remove('active'));
 
             btn.classList.add('active');
-            const targetId = btn.getAttribute('data-tab');
-            const targetContent = document.getElementById(targetId);
-            if (targetContent) {
-                targetContent.classList.add('active');
+            const targetId = btn.getAttribute('data-target') || btn.getAttribute('data-tab');
+            if (targetId) {
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
             }
         });
     });
 
-    // 3. Copy CLI Command Button
-    const copyBtn = document.getElementById('copyCliBtn');
-    copyBtn?.addEventListener('click', () => {
-        const cmd = 'java -jar postgres_ddl_export_console_java-1.0.0.jar -db:POSTGRESQL -od:./export_output -s:profiles.json';
-        navigator.clipboard.writeText(cmd).then(() => {
-            copyBtn.textContent = 'Kopyalandı!';
-            setTimeout(() => {
-                copyBtn.textContent = 'Kopyala';
-            }, 2000);
+    // 3. Smooth Anchor Scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     });
 });
